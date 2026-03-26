@@ -1,0 +1,30 @@
+{
+  "name": "English Ladder",
+  "short_name": "Ladder",
+  "description": "Личный 30-минутный тренажер английского с SRS, input, output и недельными срезами.",
+  "lang": "ru",
+  "dir": "ltr",
+  "start_url": "./english-study-coach.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#efe3ce",
+  "theme_color": "#efe3ce",
+  "icons": [
+    {
+      "src": "./pwa-assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./pwa-assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./pwa-assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

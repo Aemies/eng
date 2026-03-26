@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#efe3ce">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="English Ladder">
+  <title>English Ladder</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./pwa-assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./pwa-assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f7f2e8;
+      --paper-strong: #fffaf1;
+      --ink: #25170f;
+      --ink-soft: #6f5848;
+      --line: rgba(37, 23, 15, 0.12);
+      --line-strong: rgba(37, 23, 15, 0.22);
+      --sage: #2f6e52;
+      --sage-soft: rgba(47, 110, 82, 0.12);
+      --clay: #b96342;
+      --clay-soft: rgba(185, 99, 66, 0.14);
+      --gold: #d5a253;
+      --gold-soft: rgba(213, 162, 83, 0.16);
+      --white: #ffffff;
+      --shadow: 0 20px 50px rgba(63, 43, 28, 0.12);
+      --radius: 28px;
+      --radius-sm: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(213, 162, 83, 0.18), transparent 35%),
+        radial-gradient(circle at top right, rgba(47, 110, 82, 0.18), transparent 32%),
+        linear-gradient(180deg, #f4ecdd 0%, #efe3ce 100%);
+      color: var(--ink);
+      font-family: "Instrument Sans", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      padding: 22px 14px 36px;
+    }
+
+    a {
+      color: var(--sage);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(100%, 520px);
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      background: rgba(255, 250, 241, 0.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      backdrop-filter: blur(14px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 24px 20px 20px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(213, 162, 83, 0.24), transparent 32%),
+        radial-gradient(circle at 0% 100%, rgba(47, 110, 82, 0.2), transparent 38%),
+        linear-gradient(140deg, rgba(255, 250, 241, 0.98), rgba(248, 239, 224, 0.92));
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37, 23, 15, 0.06);
+      color: var(--ink-soft);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero h1,
+    .section-title,
+    .block-title,
+    .week-title,
+    .metric-value {
+      font-family: "Fraunces", serif;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 {
+      margin: 14px 0 8px;
+      font-size: 36px;
+      line-height: 0.96;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .hero-grid,
+    .metrics-grid,
+    .form-grid,
+    .phase-grid,
+    .lower-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .hero-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+
+    .hero-chip,
+    .metric-box,
+    .cycle-pill,
+    .resource-chip {
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .hero-chip {
+      padding: 12px 12px 11px;
+      min-height: 76px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-chip strong {
+      font-size: 16px;
+      line-height: 1.15;
+    }
+
+    .hero-chip span {
+      color: var(--ink-soft);
+      font-size: 12px;
+    }
+
+    .hero-chip.accent {
+      background: linear-gradient(135deg, rgba(47, 110, 82, 0.15), rgba(213, 162, 83, 0.18));
+      border-color: rgba(47, 110, 82, 0.18);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.02;
+    }
+
+    .section-note {
+      margin: 4px 0 0;
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .tiny-note {
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.35;
+      text-align: right;
+      max-width: 140px;
+    }
+
+    .metrics-grid,
+    .phase-grid,
+    .lower-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .metric-box {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .metric-label {
+      color: var(--ink-soft);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .metric-value {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .metric-sub {
+      color: var(--ink-soft);
+      font-size: 13px;
+    }
+
+    .form-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      border-radius: 16px;
+      padding: 13px 14px;
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    }
+
+    textarea {
+      min-height: 94px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(47, 110, 82, 0.55);
+      box-shadow: 0 0 0 4px rgba(47, 110, 82, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .inline-actions {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn,
+    .primary-btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 15px 18px;
+      background: linear-gradient(135deg, var(--sage), #3c8664);
+      color: var(--white);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      box-shadow: 0 14px 24px rgba(47, 110, 82, 0.18);
+    }
+
+    .primary-btn.secondary {
+      background: linear-gradient(135deg, var(--clay), #c77653);
+      box-shadow: 0 14px 24px rgba(185, 99, 66, 0.18);
+    }
+
+    .install-note {
+      padding: 14px 16px;
+      border-radius: 22px;
+      background: rgba(37, 23, 15, 0.06);
+      border: 1px dashed rgba(37, 23, 15, 0.18);
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .install-note.hidden {
+      display: none;
+    }
+
+    .primary-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .action-btn {
+      padding: 11px 14px;
+      background: rgba(37, 23, 15, 0.06);
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .action-btn:hover,
+    .primary-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .helper-text {
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .route-list {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .route-step {
+      display: grid;
+      grid-template-columns: 62px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid var(--line);
+    }
+
+    .route-step.done {
+      background: linear-gradient(135deg, rgba(47, 110, 82, 0.12), rgba(213, 162, 83, 0.12));
+      border-color: rgba(47, 110, 82, 0.2);
+    }
+
+    .route-time {
+      padding: 9px 8px;
+      border-radius: 14px;
+      background: var(--paper);
+      font-size: 12px;
+      text-align: center;
+      color: var(--ink-soft);
+      font-weight: 700;
+    }
+
+    .route-body {
+      display: grid;
+      gap: 4px;
+    }
+
+    .route-title {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .route-summary {
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .route-status {
+      min-width: 64px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: rgba(37, 23, 15, 0.08);
+      color: var(--ink-soft);
+    }
+
+    .route-step.done .route-status {
+      background: rgba(47, 110, 82, 0.14);
+      color: var(--sage);
+    }
+
+    .week-headline {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(213, 162, 83, 0.18), rgba(47, 110, 82, 0.08));
+      border: 1px solid rgba(213, 162, 83, 0.22);
+    }
+
+    .week-title {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .week-focus,
+    .week-outcome,
+    .week-prompt {
+      color: var(--ink-soft);
+      font-size: 14px;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .cycle-strip,
+    .resource-wrap,
+    .streak-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .cycle-strip {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      margin: 14px 0 10px;
+    }
+
+    .cycle-pill {
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--ink-soft);
+    }
+
+    .cycle-pill strong {
+      display: block;
+      color: var(--ink);
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .cycle-pill.active {
+      background: linear-gradient(135deg, rgba(47, 110, 82, 0.18), rgba(255, 255, 255, 0.82));
+      border-color: rgba(47, 110, 82, 0.24);
+      color: var(--sage);
+    }
+
+    .resource-wrap {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 12px;
+    }
+
+    .resource-chip {
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+
+    .resource-chip strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .block {
+      padding: 16px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.64);
+    }
+
+    .block.srs {
+      background: linear-gradient(160deg, rgba(47, 110, 82, 0.09), rgba(255, 255, 255, 0.68));
+    }
+
+    .block.input {
+      background: linear-gradient(160deg, rgba(213, 162, 83, 0.12), rgba(255, 255, 255, 0.68));
+    }
+
+    .block.output {
+      background: linear-gradient(160deg, rgba(185, 99, 66, 0.11), rgba(255, 255, 255, 0.68));
+    }
+
+    .block.wrap {
+      background: linear-gradient(160deg, rgba(37, 23, 15, 0.06), rgba(255, 255, 255, 0.68));
+    }
+
+    .block-title {
+      margin: 0 0 6px;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .block-note {
+      margin: 0 0 12px;
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .checkline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .checkline input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--sage);
+      margin: 0;
+      padding: 0;
+      border-radius: 6px;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .scene-protocol {
+      display: grid;
+      gap: 9px;
+      margin: 10px 0 4px;
+    }
+
+    .scene-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .scene-step input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--clay);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .streak-grid {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+
+    .streak-cell {
+      min-height: 76px;
+      border-radius: 18px;
+      padding: 10px 8px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.7);
+      display: grid;
+      align-content: space-between;
+      gap: 8px;
+    }
+
+    .streak-cell.done {
+      background: linear-gradient(180deg, rgba(47, 110, 82, 0.16), rgba(255, 255, 255, 0.72));
+      border-color: rgba(47, 110, 82, 0.24);
+    }
+
+    .streak-cell.today {
+      border-color: rgba(185, 99, 66, 0.4);
+      box-shadow: inset 0 0 0 2px rgba(185, 99, 66, 0.08);
+    }
+
+    .streak-date {
+      font-size: 11px;
+      color: var(--ink-soft);
+      line-height: 1.2;
+    }
+
+    .streak-mark {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+
+    .streak-cell.done .streak-mark {
+      color: var(--sage);
+    }
+
+    .footer-note {
+      padding: 2px 4px 0;
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 430px) {
+      .hero-grid,
+      .metrics-grid,
+      .form-grid,
+      .phase-grid,
+      .lower-grid,
+      .resource-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .route-step {
+        grid-template-columns: 1fr;
+        justify-items: start;
+      }
+
+      .route-status {
+        min-width: 0;
+      }
+
+      .cycle-strip {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .streak-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="card hero">
+      <div class="eyebrow">30 минут в день • input + output + SRS + контроль</div>
+      <h1>English Ladder</h1>
+      <p>Личный мобильный тренажер под метод из PDF: короткий ежедневный цикл, умные субтитры, прогресс по неделям и очень мало лишних действий.</p>
+      <div class="hero-grid">
+        <div class="hero-chip">
+          <span>Сегодня</span>
+          <strong id="heroDate">26 марта</strong>
+        </div>
+        <div class="hero-chip accent">
+          <span>Фаза</span>
+          <strong id="heroWeek">Неделя 1</strong>
+        </div>
+        <div class="hero-chip">
+          <span>Ритм</span>
+          <strong id="heroCycle">День 1</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="card install-note" id="installNote">
+      Чтобы поставить на iPhone: открой страницу в <strong>Safari</strong>, нажми <strong>Поделиться</strong> и выбери <strong>На экран Домой</strong>. После установки она откроется как отдельное приложение.
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Личный ритм</h2>
+          <p class="section-note">Один раз настраиваешь под себя, дальше каждый день открываешь только эту страницу.</p>
+        </div>
+        <div class="tiny-note">Если хочешь идти по PDF буквально, старт можно поставить на 25.03.2026.</div>
+      </div>
+      <div class="form-grid">
+        <label>
+          Имя
+          <input id="profileName" type="text" placeholder="Как к тебе обращаться">
+        </label>
+        <label>
+          Старт плана
+          <input id="profileStartDate" type="date">
+        </label>
+        <label>
+          Минут в день
+          <input id="profileDailyGoal" type="number" min="15" max="90" step="5">
+        </label>
+        <label>
+          Цель
+          <select id="profileTarget">
+            <option value="strong-a2">Сильный A2</option>
+            <option value="a2-b1">A2 → низкий B1</option>
+            <option value="b1-bridge">Функциональный B1 bridge</option>
+          </select>
+        </label>
+      </div>
+      <div class="inline-actions">
+        <button class="action-btn" type="button" id="exportDataBtn">Скачать свои данные</button>
+        <div class="helper-text">Лог сохраняется локально в браузере. Структура БД для Supabase лежит рядом в `supabase/migrations`.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <span class="metric-label">Серия дней</span>
+          <strong class="metric-value" id="metricStreak">0</strong>
+          <span class="metric-sub">дней подряд без пропуска</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">Завершено</span>
+          <strong class="metric-value" id="metricCompleted">0</strong>
+          <span class="metric-sub">дней внутри плана</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">Фразы</span>
+          <strong class="metric-value" id="metricPhrases">0</strong>
+          <span class="metric-sub">поймано для Anki</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">Сегодня</span>
+          <strong class="metric-value" id="metricProgress">0%</strong>
+          <span class="metric-sub">насколько день уже собран</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Маршрут на сегодня</h2>
+          <p class="section-note" id="dailyFocusLine"></p>
+        </div>
+        <div class="tiny-note" id="dayCounter">День 1 из 84</div>
+      </div>
+      <div class="route-list" id="routeList"></div>
+      <button class="primary-btn" type="button" id="finishDayBtn">Завершить день</button>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Фокус недели</h2>
+          <p class="section-note">Неделя задает тему, а 7‑дневный ритм не дает распылиться.</p>
+        </div>
+        <div class="tiny-note">Если день пропустил, не догоняй часами. Просто вернись в ритм завтра.</div>
+      </div>
+      <div class="week-headline">
+        <h3 class="week-title" id="weekTitle">Неделя 1</h3>
+        <p class="week-focus" id="weekFocus"></p>
+        <p class="week-outcome" id="weekOutcome"></p>
+        <p class="week-prompt" id="weekPrompt"></p>
+      </div>
+      <div class="cycle-strip" id="cycleStrip"></div>
+      <div class="resource-wrap" id="resourceWrap"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Лог дня</h2>
+          <p class="section-note">Только то, что реально влияет на рост: карточки, понимание, речь и слабое место.</p>
+        </div>
+      </div>
+      <div class="phase-grid">
+        <div class="block srs">
+          <h3 class="block-title">0–10 • SRS</h3>
+          <p class="block-note">7–8 минут повторов и 2–3 минуты на 5 новых фраз.</p>
+          <div class="form-grid">
+            <label>
+              Повторов
+              <input id="ankiReviews" type="number" min="0" step="1" placeholder="24">
+            </label>
+            <label>
+              Новых фраз
+              <input id="newCards" type="number" min="0" step="1" placeholder="5">
+            </label>
+          </div>
+          <label>
+            Тяжёлая фраза дня
+            <textarea id="hardPhrase" placeholder="Например: What do you do for work?"></textarea>
+          </label>
+          <label class="checkline">
+            <input id="srsDone" type="checkbox">
+            Блок SRS завершён
+          </label>
+        </div>
+
+        <div class="block input">
+          <h3 class="block-title">10–22 • Input</h3>
+          <p class="block-note">Сначала общий смысл, потом второй проход с текстом и полезными фразами.</p>
+          <div class="form-grid">
+            <label>
+              Формат
+              <select id="resourceType">
+                <option value="">Выбери формат</option>
+                <option value="audio">Аудио</option>
+                <option value="video">Видео</option>
+                <option value="text">Текст</option>
+                <option value="movie">Сцена из фильма</option>
+              </select>
+            </label>
+            <label>
+              Понимание, %
+              <input id="understandingPct" type="number" min="0" max="100" step="5" placeholder="70">
+            </label>
+          </div>
+          <label>
+            Что слушал или читал
+            <input id="resourceTitle" type="text" placeholder="British Council A1 Listening / VOA Lesson 3">
+          </label>
+          <label>
+            Полезные фразы
+            <textarea id="extractedPhrases" placeholder="5–8 фраз, которые реально пригодятся"></textarea>
+          </label>
+          <label class="checkline">
+            <input id="inputDone" type="checkbox">
+            Блок input завершён
+          </label>
+        </div>
+
+        <div class="block output">
+          <h3 class="block-title">22–28 • Output</h3>
+          <p class="block-note">Чуть‑чуть, но каждый день: shadowing и короткий монолог или мини‑диалог.</p>
+          <div class="form-grid">
+            <label>
+              Shadowing, мин
+              <input id="shadowingMinutes" type="number" min="0" max="10" step="1" placeholder="2">
+            </label>
+            <label>
+              Монолог, сек
+              <input id="speakingSeconds" type="number" min="0" max="300" step="15" placeholder="60">
+            </label>
+          </div>
+          <label>
+            О чём говорил
+            <input id="speakingTopic" type="text" placeholder="My day / directions / weekend plans">
+          </label>
+          <label>
+            Что запнулось
+            <textarea id="speakingNote" placeholder="Не хватило слов, путал was/were, длинные паузы..."></textarea>
+          </label>
+          <label class="checkline">
+            <input id="outputDone" type="checkbox">
+            Блок output завершён
+          </label>
+        </div>
+
+        <div class="block wrap">
+          <h3 class="block-title">28–30 • Fix</h3>
+          <p class="block-note">Одна точка роста на завтра важнее длинных размышлений о мотивации.</p>
+          <label>
+            Слабое место
+            <textarea id="weakSpot" placeholder="Например: вопросы в Present Simple всё ещё медленные"></textarea>
+          </label>
+          <label>
+            Микро‑цель на завтра
+            <input id="microGoal" type="text" placeholder="3 вопроса без пауз / 1 сцена без русских субтитров">
+          </label>
+          <label>
+            Короткая заметка
+            <textarea id="dayNotes" placeholder="Что помогло, что хочется повторить, что сменить"></textarea>
+          </label>
+          <label class="checkline">
+            <input id="wrapDone" type="checkbox">
+            День зафиксирован
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="lower-grid">
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Scene Lab</h2>
+            <p class="section-note">Отдельный модуль под фильмы: не просто смотреть, а учиться по 1 сцене.</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <label>
+            Источник
+            <input id="sceneSource" type="text" placeholder="YouTube / Netflix / VOA English @ the Movies">
+          </label>
+          <label>
+            Сцена
+            <input id="sceneTitle" type="text" placeholder="Coffee shop scene / trailer / short clip">
+          </label>
+        </div>
+        <div class="scene-protocol">
+          <label class="scene-step">
+            <input id="sceneMeaningDone" type="checkbox">
+            1 проход: понял сюжет, ничего не выписывал
+          </label>
+          <label class="scene-step">
+            <input id="sceneSubtitlesDone" type="checkbox">
+            2 проход: EN‑субтитры, выделил 5–8 фраз
+          </label>
+          <label class="scene-step">
+            <input id="sceneNoSubtitlesDone" type="checkbox">
+            3 проход: без субтитров + shadowing
+          </label>
+        </div>
+        <label>
+          Реплики из сцены
+          <textarea id="sceneLines" placeholder="Can I have a coffee, please? / How much is it? / Here you are."></textarea>
+        </label>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Недельный срез</h2>
+            <p class="section-note">Раз в неделю важнее смотреть на факты, чем на ощущение “кажется, стало лучше”.</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <label>
+            Монолог, сек
+            <input id="checkpointMonologueSeconds" type="number" min="0" max="300" step="15" placeholder="90">
+          </label>
+          <label>
+            Паузы, 1–5
+            <input id="checkpointPauseScore" type="number" min="1" max="5" step="1" placeholder="3">
+          </label>
+          <label>
+            Понятность, 1–5
+            <input id="checkpointClarityScore" type="number" min="1" max="5" step="1" placeholder="4">
+          </label>
+          <label>
+            Аудирование, %
+            <input id="checkpointListeningPct" type="number" min="0" max="100" step="5" placeholder="70">
+          </label>
+          <label>
+            Чтение, %
+            <input id="checkpointReadingPct" type="number" min="0" max="100" step="5" placeholder="75">
+          </label>
+          <label>
+            EF SET / quick test
+            <input id="checkpointTestScore" type="number" min="0" max="100" step="1" placeholder="38">
+          </label>
+        </div>
+        <label>
+          Вывод недели
+          <textarea id="checkpointNotes" placeholder="Что реально стало легче, что буксует, что менять в следующей неделе"></textarea>
+        </label>
+      </section>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Последние 14 дней</h2>
+          <p class="section-note">Здесь видна самая важная метрика для взрослого графика: регулярность, а не идеальность.</p>
+        </div>
+      </div>
+      <div class="streak-grid" id="streakGrid"></div>
+    </section>
+
+    <div class="footer-note">
+      Страница уже подходит для iPhone как “личная панель”.
+      Следующий шаг: подключить Supabase и обернуть в iOS WebView или PWA без полной нативной разработки.
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "english-ladder-v1";
+    const PLAN_DAYS = 84;
+    const todayKey = formatDate(new Date());
+
+    const weeks = [
+      {
+        title: "Неделя 1 · Survival English",
+        focus: "Приветствия, представление, am/is/are и самые частые бытовые вопросы.",
+        outcome: "К концу недели ты спокойно записываешь self-intro на 30–60 секунд и без паники слышишь базовые A1-диалоги.",
+        prompt: "Речевая цель: My name is..., I am from..., I like..., I work as...",
+        resources: [
+          { label: "British Council A1 Listening", href: "https://learnenglish.britishcouncil.org/skills/listening/a1-listening", note: "Короткие уровневые задания с транскриптами." },
+          { label: "British Council Getting Started", href: "https://learnenglish.britishcouncil.org/getting-started", note: "Мягкий старт без перегруза." }
+        ]
+      },
+      {
+        title: "Неделя 2 · Режим дня",
+        focus: "Present Simple, there is/there are, дни недели, время, I live / I work / I like.",
+        outcome: "Можешь коротко описать свой день, дом, работу и привычки без долгих пауз.",
+        prompt: "Речевая цель: describe your normal day in 5–6 short sentences.",
+        resources: [
+          { label: "British Council A1 Speaking", href: "https://learnenglish.britishcouncil.org/skills/speaking/a1-speaking", note: "Фразы под простые бытовые ответы." },
+          { label: "VOA Let’s Learn English L1", href: "https://learningenglish.voanews.com/p/5644.html", note: "Переход от правила к живому сюжету." }
+        ]
+      },
+      {
+        title: "Неделя 3 · Прошлое минимально",
+        focus: "was/were, did, went и короткий рассказ про вчера или прошлые выходные.",
+        outcome: "Появляется базовый рассказ про прошлое без идеальной грамматики, но с понятным смыслом.",
+        prompt: "Речевая цель: What did you do yesterday?",
+        resources: [
+          { label: "VOA Let’s Learn English L1", href: "https://learningenglish.voanews.com/p/5644.html", note: "Хорошо ложится на beginner past stories." },
+          { label: "Anki", href: "https://apps.ankiweb.net/", note: "Фиксируй past forms только в полезных фразах." }
+        ]
+      },
+      {
+        title: "Неделя 4 · Планы и просьбы",
+        focus: "going to, can/can’t, could you, направления, магазины, короткие сервисные диалоги.",
+        outcome: "Можешь спросить дорогу, попросить помощь и построить простой план на выходные.",
+        prompt: "Речевая цель: ask for help and say your plan for tomorrow.",
+        resources: [
+          { label: "EF SET Quick Check", href: "https://www.efset.org/quick-check/", note: "Сделай 15-минутный срез в конце недели." },
+          { label: "British Council A1 Listening", href: "https://learnenglish.britishcouncil.org/skills/listening/a1-listening", note: "Выбери темы про directions и requests." }
+        ]
+      },
+      {
+        title: "Неделя 5 · Сборка A2",
+        focus: "some/any, countable/uncountable, сравнения, короткий пересказ текста на 60 секунд.",
+        outcome: "Появляется связность: не только отдельные ответы, но и короткий понятный кусок речи.",
+        prompt: "Речевая цель: retell a short story or article in your own words.",
+        resources: [
+          { label: "Story Zone A2–B1", href: "https://learnenglish.britishcouncil.org/general-english/story-zone/a2-b1-stories", note: "Идеальный мост от чтения к пересказу." },
+          { label: "British Council LearnEnglish", href: "https://learnenglish.britishcouncil.org/", note: "Подбирай только A2-материал на знакомые темы." }
+        ]
+      },
+      {
+        title: "Неделя 6 · Речь и обязанность",
+        focus: "Present Continuous, have to, should, 2 голосовых сообщения партнёру за неделю.",
+        outcome: "Переход от “проговорил в пустоту” к реальному interaction хотя бы через голосовые.",
+        prompt: "Речевая цель: explain what you are doing now and what you should do next.",
+        resources: [
+          { label: "HelloTalk", href: "https://www.hellotalk.com/en", note: "Голосовые по 30–60 секунд вместо тяжёлых звонков." },
+          { label: "Tandem", href: "https://www.tandem.net/en", note: "Найди 1 человека для регулярных коротких обменов." }
+        ]
+      },
+      {
+        title: "Неделя 7 · Мост к B1",
+        focus: "Present Perfect для опыта, связки because/so, объяснение причины и результата.",
+        outcome: "Появляются B1-функции в знакомых темах: опыт, мнение, простая аргументация.",
+        prompt: "Речевая цель: talk about something you have tried, seen or learned.",
+        resources: [
+          { label: "British Council B1 Listening", href: "https://learnenglish.britishcouncil.org/skills/listening/b1-listening", note: "Не за оценкой, а за привыканием к B1-нагрузке." },
+          { label: "Anki", href: "https://apps.ankiweb.net/", note: "Фокус на чанках: I have tried..., because..., so..." }
+        ]
+      },
+      {
+        title: "Неделя 8 · Фильмы как учебник",
+        focus: "1 сцена = 3 прохода: смысл, EN-субтитры, без субтитров + shadowing.",
+        outcome: "Фильмы перестают быть хаосом: ты умеешь вытащить из сцены полезные реплики и произнести их.",
+        prompt: "Речевая цель: describe the scene and repeat 3 lines confidently.",
+        resources: [
+          { label: "Language Reactor", href: "https://www.languagereactor.com/", note: "Автопауза по строкам и быстрый словарь." },
+          { label: "VOA English @ the Movies", href: "https://learningenglish.voanews.com/z/4691", note: "Лёгкий мост к кино-лексике и идиомам." }
+        ]
+      },
+      {
+        title: "Неделя 9 · Мнение и рекомендации",
+        focus: "Высказывать мнение, рекомендовать фильм, уточнять и переспрашивать.",
+        outcome: "Можешь поддержать бытовой диалог про предпочтения, советы и простые решения.",
+        prompt: "Речевая цель: recommend a movie and say why it is easy to understand.",
+        resources: [
+          { label: "British Council B1 Speaking", href: "https://learnenglish.britishcouncil.org/skills/speaking/b1-speaking", note: "Готовые шаблоны под мнение и предложение." },
+          { label: "British Council B1 Listening", href: "https://learnenglish.britishcouncil.org/skills/listening/b1-listening", note: "Выбирай диалоги про daily life and opinions." }
+        ]
+      },
+      {
+        title: "Неделя 10 · Уточнение и сервис",
+        focus: "Could you repeat that? What do you mean? I need help with..., телефон и сервис.",
+        outcome: "Появляется ощущение реального общения, где можно переспросить и не выпадать из диалога.",
+        prompt: "Речевая цель: handle a simple service call or request clarification politely.",
+        resources: [
+          { label: "HelloTalk", href: "https://www.hellotalk.com/en", note: "Попроси партнёра задать тебе 3 уточняющих вопроса." },
+          { label: "Tandem", href: "https://www.tandem.net/en", note: "Потренируй короткий сервисный сценарий." }
+        ]
+      },
+      {
+        title: "Неделя 11 · Истории и консолидация",
+        focus: "Три истории в неделю, пересказ, повтор сцен и больше связной речи по 1–2 минуты.",
+        outcome: "Речь становится длиннее и спокойнее, а карточки начинают работать в живом контексте.",
+        prompt: "Речевая цель: tell one story from your week from start to finish.",
+        resources: [
+          { label: "Story Zone A2–B1", href: "https://learnenglish.britishcouncil.org/general-english/story-zone/a2-b1-stories", note: "Истории для чтения + пересказа." },
+          { label: "British Council B1 Listening", href: "https://learnenglish.britishcouncil.org/skills/listening/b1-listening", note: "Добавляй один более сложный фрагмент в неделю." }
+        ]
+      },
+      {
+        title: "Неделя 12 · Финиш и удержание",
+        focus: "Финальный срез, повтор сильных сцен и сравнение с первой неделей.",
+        outcome: "Ты видишь не абстрактный уровень, а реальный прирост в речи, понимании и бытовых функциях.",
+        prompt: "Речевая цель: compare week 1 and week 12 and say what is easier now.",
+        resources: [
+          { label: "EF SET Quick Check", href: "https://www.efset.org/quick-check/", note: "Повтори и сравни с 4-й неделей." },
+          { label: "Cambridge Test Your English", href: "https://www.cambridgeenglish.org/test-your-english/", note: "Хороший дополнительный контрольный срез." }
+        ]
+      }
+    ];
+
+    const cycleDays = [
+      { short: "1", title: "Структуры", mission: "микро-грамматика + 30–60 сек речи" },
+      { short: "2", title: "Слушание", mission: "аудио с транскриптом + shadowing" },
+      { short: "3", title: "Говорение", mission: "мини-диалог или голосовое партнёру" },
+      { short: "4", title: "Чтение", mission: "короткий текст + пересказ" },
+      { short: "5", title: "Сцена", mission: "фильм / клип + 5–8 фраз" },
+      { short: "6", title: "Повтор", mission: "тяжёлые карточки + мини-диктант" },
+      { short: "7", title: "Срез", mission: "монолог + тест + план следующей недели" }
+    ];
+
+    const profileFieldMap = [
+      { id: "profileName", key: "name", type: "text" },
+      { id: "profileStartDate", key: "startDate", type: "text" },
+      { id: "profileDailyGoal", key: "dailyGoalMinutes", type: "number" },
+      { id: "profileTarget", key: "targetMode", type: "text" }
+    ];
+
+    const dayFieldMap = [
+      { id: "ankiReviews", key: "ankiReviews", type: "number" },
+      { id: "newCards", key: "newCards", type: "number" },
+      { id: "hardPhrase", key: "hardPhrase", type: "text" },
+      { id: "resourceType", key: "resourceType", type: "text" },
+      { id: "understandingPct", key: "understandingPct", type: "number" },
+      { id: "resourceTitle", key: "resourceTitle", type: "text" },
+      { id: "extractedPhrases", key: "extractedPhrases", type: "text" },
+      { id: "shadowingMinutes", key: "shadowingMinutes", type: "number" },
+      { id: "speakingSeconds", key: "speakingSeconds", type: "number" },
+      { id: "speakingTopic", key: "speakingTopic", type: "text" },
+      { id: "speakingNote", key: "speakingNote", type: "text" },
+      { id: "weakSpot", key: "weakSpot", type: "text" },
+      { id: "microGoal", key: "microGoal", type: "text" },
+      { id: "dayNotes", key: "dayNotes", type: "text" },
+      { id: "sceneSource", key: "sceneSource", type: "text" },
+      { id: "sceneTitle", key: "sceneTitle", type: "text" },
+      { id: "sceneLines", key: "sceneLines", type: "text" },
+      { id: "srsDone", key: "srsDone", type: "boolean" },
+      { id: "inputDone", key: "inputDone", type: "boolean" },
+      { id: "outputDone", key: "outputDone", type: "boolean" },
+      { id: "wrapDone", key: "wrapDone", type: "boolean" },
+      { id: "sceneMeaningDone", key: "sceneMeaningDone", type: "boolean" },
+      { id: "sceneSubtitlesDone", key: "sceneSubtitlesDone", type: "boolean" },
+      { id: "sceneNoSubtitlesDone", key: "sceneNoSubtitlesDone", type: "boolean" }
+    ];
+
+    const checkpointFieldMap = [
+      { id: "checkpointMonologueSeconds", key: "monologueSeconds", type: "number" },
+      { id: "checkpointPauseScore", key: "pauseScore", type: "number" },
+      { id: "checkpointClarityScore", key: "clarityScore", type: "number" },
+      { id: "checkpointListeningPct", key: "listeningPct", type: "number" },
+      { id: "checkpointReadingPct", key: "readingPct", type: "number" },
+      { id: "checkpointTestScore", key: "testScore", type: "number" },
+      { id: "checkpointNotes", key: "notes", type: "text" }
+    ];
+
+    const defaultState = {
+      profile: {
+        name: "",
+        startDate: todayKey,
+        dailyGoalMinutes: 30,
+        targetMode: "a2-b1"
+      },
+      logs: {},
+      checkpoints: {}
+    };
+
+    let state = loadState();
+
+    ensureLog(todayKey);
+    ensureCheckpoint(getDerived().weekNumber);
+
+    bindProfileFields();
+    bindDayFields();
+    bindCheckpointFields();
+
+    document.getElementById("finishDayBtn").addEventListener("click", toggleFinishDay);
+    document.getElementById("exportDataBtn").addEventListener("click", exportData);
+
+    registerAppShell();
+    renderAll();
+
+    function bindProfileFields() {
+      profileFieldMap.forEach((field) => {
+        const element = document.getElementById(field.id);
+        const handler = () => {
+          state.profile[field.key] = normalizeFieldValue(element, field.type);
+          persist();
+          ensureCheckpoint(getDerived().weekNumber);
+          renderAll();
+        };
+        element.addEventListener("input", handler);
+        element.addEventListener("change", handler);
+      });
+    }
+
+    function bindDayFields() {
+      dayFieldMap.forEach((field) => {
+        const element = document.getElementById(field.id);
+        const handler = () => {
+          const log = ensureLog(todayKey);
+          log[field.key] = normalizeFieldValue(element, field.type);
+          if (!areCoreBlocksDone(log)) {
+            log.isComplete = false;
+          }
+          persist();
+          renderDynamic();
+        };
+        element.addEventListener("input", handler);
+        element.addEventListener("change", handler);
+      });
+    }
+
+    function bindCheckpointFields() {
+      checkpointFieldMap.forEach((field) => {
+        const element = document.getElementById(field.id);
+        const handler = () => {
+          const checkpoint = ensureCheckpoint(getDerived().weekNumber);
+          checkpoint[field.key] = normalizeFieldValue(element, field.type);
+          persist();
+        };
+        element.addEventListener("input", handler);
+        element.addEventListener("change", handler);
+      });
+    }
+
+    function renderAll() {
+      renderInstallHint();
+      renderFormValues();
+      renderDynamic();
+    }
+
+    function renderFormValues() {
+      profileFieldMap.forEach((field) => {
+        const element = document.getElementById(field.id);
+        const value = state.profile[field.key];
+        element.value = value ?? "";
+      });
+
+      const log = ensureLog(todayKey);
+      dayFieldMap.forEach((field) => {
+        const element = document.getElementById(field.id);
+        const value = log[field.key];
+        if (field.type === "boolean") {
+          element.checked = Boolean(value);
+        } else {
+          element.value = value ?? "";
+        }
+      });
+
+      const checkpoint = ensureCheckpoint(getDerived().weekNumber);
+      checkpointFieldMap.forEach((field) => {
+        const element = document.getElementById(field.id);
+        const value = checkpoint[field.key];
+        element.value = value ?? "";
+      });
+    }
+
+    function renderDynamic() {
+      const derived = getDerived();
+      const log = ensureLog(todayKey);
+      const currentWeek = weeks[derived.weekIndex];
+      const currentCycle = cycleDays[derived.cycleIndex];
+      const streak = getStreakCount();
+      const completedDays = Object.values(state.logs).filter((entry) => entry.isComplete).length;
+      const totalNewCards = Object.values(state.logs).reduce((sum, entry) => sum + toInt(entry.newCards), 0);
+      const progress = Math.round((getCompletedBlockCount(log) / 4) * 100);
+
+      document.getElementById("heroDate").textContent = formatDisplayDate(todayKey);
+      document.getElementById("heroWeek").textContent = "Неделя " + derived.weekNumber;
+      document.getElementById("heroCycle").textContent = currentCycle.title;
+      document.getElementById("metricStreak").textContent = String(streak);
+      document.getElementById("metricCompleted").textContent = String(completedDays);
+      document.getElementById("metricPhrases").textContent = String(totalNewCards);
+      document.getElementById("metricProgress").textContent = progress + "%";
+      document.getElementById("dayCounter").textContent = "День " + derived.planDay + " из " + PLAN_DAYS;
+      document.getElementById("dailyFocusLine").textContent = currentCycle.title + ": " + currentCycle.mission + ".";
+
+      document.getElementById("weekTitle").textContent = currentWeek.title;
+      document.getElementById("weekFocus").textContent = currentWeek.focus;
+      document.getElementById("weekOutcome").textContent = currentWeek.outcome;
+      document.getElementById("weekPrompt").textContent = currentWeek.prompt;
+
+      renderRouteList(log, currentCycle);
+      renderCycleStrip(derived.cycleIndex);
+      renderResources(currentWeek.resources);
+      renderStreakGrid();
+      renderFinishButton(log);
+    }
+
+    function renderRouteList(log, currentCycle) {
+      const steps = [
+        {
+          minutes: "0–10",
+          title: "Anki / SRS",
+          summary: toInt(log.ankiReviews) + " повторов • " + toInt(log.newCards) + " новых фраз",
+          done: Boolean(log.srsDone)
+        },
+        {
+          minutes: "10–22",
+          title: "Input",
+          summary: (log.resourceTitle || "Выбери один короткий источник") + " • " + (log.understandingPct || "0") + "% понимания",
+          done: Boolean(log.inputDone)
+        },
+        {
+          minutes: "22–28",
+          title: "Output",
+          summary: (log.speakingTopic || currentCycle.mission) + " • " + toInt(log.speakingSeconds) + " сек речи",
+          done: Boolean(log.outputDone)
+        },
+        {
+          minutes: "28–30",
+          title: "Fix + tomorrow",
+          summary: log.microGoal || "Оставь одну маленькую цель на завтра",
+          done: Boolean(log.wrapDone)
+        }
+      ];
+
+      document.getElementById("routeList").innerHTML = steps.map((step) => {
+        return `
+          <div class="route-step${step.done ? " done" : ""}">
+            <div class="route-time">${step.minutes}</div>
+            <div class="route-body">
+              <div class="route-title">${escapeHtml(step.title)}</div>
+              <div class="route-summary">${escapeHtml(step.summary)}</div>
+            </div>
+            <div class="route-status">${step.done ? "готово" : "в работе"}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderCycleStrip(activeIndex) {
+      document.getElementById("cycleStrip").innerHTML = cycleDays.map((item, index) => {
+        return `
+          <div class="cycle-pill${index === activeIndex ? " active" : ""}">
+            <strong>${escapeHtml(item.short)}</strong>
+            ${escapeHtml(item.title)}
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderResources(resources) {
+      document.getElementById("resourceWrap").innerHTML = resources.map((resource) => {
+        return `
+          <a class="resource-chip" href="${resource.href}" target="_blank" rel="noreferrer">
+            <strong>${escapeHtml(resource.label)}</strong>
+            ${escapeHtml(resource.note)}
+          </a>
+        `;
+      }).join("");
+    }
+
+    function renderStreakGrid() {
+      const days = [];
+      for (let offset = 13; offset >= 0; offset -= 1) {
+        const date = addDays(todayKey, -offset);
+        const log = state.logs[date];
+        const isToday = date === todayKey;
+        days.push({
+          date,
+          done: Boolean(log && log.isComplete),
+          isToday
+        });
+      }
+
+      document.getElementById("streakGrid").innerHTML = days.map((day) => {
+        return `
+          <div class="streak-cell${day.done ? " done" : ""}${day.isToday ? " today" : ""}">
+            <div class="streak-date">${escapeHtml(formatShortDate(day.date))}</div>
+            <div class="streak-mark">${day.done ? "день собран" : (day.isToday ? "сегодня" : "пауза")}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderFinishButton(log) {
+      const button = document.getElementById("finishDayBtn");
+      const ready = areCoreBlocksDone(log);
+      if (!ready) {
+        button.disabled = true;
+        button.classList.remove("secondary");
+        button.textContent = "Сначала закрой 4 блока дня";
+        return;
+      }
+
+      button.disabled = false;
+      if (log.isComplete) {
+        button.classList.add("secondary");
+        button.textContent = "День отмечен как завершён";
+      } else {
+        button.classList.remove("secondary");
+        button.textContent = "Завершить день";
+      }
+    }
+
+    function toggleFinishDay() {
+      const log = ensureLog(todayKey);
+      if (!areCoreBlocksDone(log)) {
+        return;
+      }
+      log.isComplete = !log.isComplete;
+      persist();
+      renderDynamic();
+    }
+
+    function getDerived() {
+      const startKey = state.profile.startDate || todayKey;
+      const diffDays = Math.max(0, dayDiff(startKey, todayKey));
+      const clamped = Math.min(diffDays, PLAN_DAYS - 1);
+      const weekIndex = Math.min(Math.floor(clamped / 7), weeks.length - 1);
+      const cycleIndex = clamped % 7;
+      return {
+        diffDays,
+        planDay: clamped + 1,
+        weekIndex,
+        weekNumber: weekIndex + 1,
+        cycleIndex
+      };
+    }
+
+    function ensureLog(dateKey) {
+      if (!state.logs[dateKey]) {
+        state.logs[dateKey] = {
+          ankiReviews: "",
+          newCards: "",
+          hardPhrase: "",
+          resourceType: "",
+          understandingPct: "",
+          resourceTitle: "",
+          extractedPhrases: "",
+          shadowingMinutes: "",
+          speakingSeconds: "",
+          speakingTopic: "",
+          speakingNote: "",
+          weakSpot: "",
+          microGoal: "",
+          dayNotes: "",
+          sceneSource: "",
+          sceneTitle: "",
+          sceneLines: "",
+          srsDone: false,
+          inputDone: false,
+          outputDone: false,
+          wrapDone: false,
+          sceneMeaningDone: false,
+          sceneSubtitlesDone: false,
+          sceneNoSubtitlesDone: false,
+          isComplete: false
+        };
+      }
+      return state.logs[dateKey];
+    }
+
+    function ensureCheckpoint(weekNumber) {
+      if (!state.checkpoints[weekNumber]) {
+        state.checkpoints[weekNumber] = {
+          monologueSeconds: "",
+          pauseScore: "",
+          clarityScore: "",
+          listeningPct: "",
+          readingPct: "",
+          testScore: "",
+          notes: ""
+        };
+      }
+      return state.checkpoints[weekNumber];
+    }
+
+    function areCoreBlocksDone(log) {
+      return Boolean(log.srsDone && log.inputDone && log.outputDone && log.wrapDone);
+    }
+
+    function getCompletedBlockCount(log) {
+      return [log.srsDone, log.inputDone, log.outputDone, log.wrapDone].filter(Boolean).length;
+    }
+
+    function getStreakCount() {
+      let streak = 0;
+      for (let offset = 0; offset < PLAN_DAYS; offset += 1) {
+        const key = addDays(todayKey, -offset);
+        const log = state.logs[key];
+        if (log && log.isComplete) {
+          streak += 1;
+        } else {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    function exportData() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "english-ladder-data.json";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          return cloneDefaultState();
+        }
+        const parsed = JSON.parse(raw);
+        return {
+          profile: { ...defaultState.profile, ...(parsed.profile || {}) },
+          logs: parsed.logs || {},
+          checkpoints: parsed.checkpoints || {}
+        };
+      } catch (error) {
+        return cloneDefaultState();
+      }
+    }
+
+    function persist() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function normalizeFieldValue(element, type) {
+      if (type === "boolean") {
+        return element.checked;
+      }
+      if (type === "number") {
+        return element.value === "" ? "" : Number(element.value);
+      }
+      return element.value;
+    }
+
+    function dayDiff(fromKey, toKey) {
+      const fromDate = new Date(fromKey + "T00:00:00");
+      const toDate = new Date(toKey + "T00:00:00");
+      const ms = toDate.getTime() - fromDate.getTime();
+      return Math.round(ms / 86400000);
+    }
+
+    function addDays(dateKey, days) {
+      const date = new Date(dateKey + "T00:00:00");
+      date.setDate(date.getDate() + days);
+      return formatDate(date);
+    }
+
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return year + "-" + month + "-" + day;
+    }
+
+    function formatDisplayDate(dateKey) {
+      return new Intl.DateTimeFormat("ru-RU", {
+        day: "numeric",
+        month: "long"
+      }).format(new Date(dateKey + "T00:00:00"));
+    }
+
+    function formatShortDate(dateKey) {
+      return new Intl.DateTimeFormat("ru-RU", {
+        day: "2-digit",
+        month: "2-digit"
+      }).format(new Date(dateKey + "T00:00:00"));
+    }
+
+    function toInt(value) {
+      return Number.isFinite(Number(value)) ? Number(value) : 0;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function cloneDefaultState() {
+      return JSON.parse(JSON.stringify(defaultState));
+    }
+
+    function registerAppShell() {
+      const isSecureContextForSw = window.location.protocol === "https:" || window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+      if ("serviceWorker" in navigator && isSecureContextForSw) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch((error) => {
+            console.warn("Service worker registration failed", error);
+          });
+        });
+      }
+    }
+
+    function renderInstallHint() {
+      const note = document.getElementById("installNote");
+      const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+      note.classList.toggle("hidden", isStandalone);
+    }
+  </script>
+</body>
+</html>
